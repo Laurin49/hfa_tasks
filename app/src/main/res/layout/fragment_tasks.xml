@@ -5,7 +5,9 @@
     tools:context=".TasksFragment">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="info.diwe.tasks.TaskViewModel" />
     </data>
 
     <LinearLayout
@@ -18,14 +20,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/edt_task_name"
             android:inputType="text"
-            android:hint="@string/enter_a_task_name" />
+            android:hint="@string/enter_a_task_name"
+            android:text="@={viewModel.newTaskName}"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btn_save"
             android:text="@string/save_task"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:onClick="@{() -> viewModel.addTask()}"/>
 
         <TextView
             android:layout_width="match_parent"
