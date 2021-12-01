@@ -38,6 +38,7 @@
             android:layout_weight="1"
             android:id="@+id/rv_tasks_list"
             android:gravity="top"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"/>
     </LinearLayout>
 </layout>
