@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import info.diwe.tasks.databinding.FragmentTasksBinding
 
 class TasksFragment : Fragment() {
@@ -31,10 +32,22 @@ class TasksFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        // gives a lambda expression to Constructor TaskItemAdapter
         val adapter = TaskItemAdapter{taskId ->
-            Toast.makeText(context, "Clicked Task: $taskId", Toast.LENGTH_SHORT).show()
+            // when the User click on a Task, call TaskViewModel's onTaskClicked() method
+            viewModel.onTaskClicked(taskId)
         }
         binding.rvTasksList.adapter = adapter
+
+        viewModel.navigateToTask.observe(viewLifecycleOwner, Observer { taskId ->
+            // the let block will only run if taskId is not null
+            taskId?.let {
+                val action = TasksFragmentDirections.actionTasksFragmentToEditTaskFragment(taskId)
+                this.findNavController().navigate(action)
+                // sets the navigateToTask property to null
+                viewModel.onTaskNavigated()
+            }
+        })
 
         // each time the tasks property gets a new value, TasksFragment submits its List<Task>
         // to the TaskItemAdapter
