@@ -33,10 +33,11 @@ class TasksFragment : Fragment() {
         val adapter = TaskItemAdapter()
         binding.rvTasksList.adapter = adapter
 
-        // assigns list of task when tasks changes to adapter class data propberty
+        // each time the tasks property gets a new value, TasksFragment submits its List<Task>
+        // to the TaskItemAdapter
         viewModel.tasks.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
             }
         })
 
