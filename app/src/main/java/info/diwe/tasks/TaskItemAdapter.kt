@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import info.diwe.tasks.databinding.TaskItemBinding
 
 // TaskItemAdapter uses TaskDiffItemCallback to compare its old data with the new.
 class TaskItemAdapter: ListAdapter<Task, TaskItemAdapter.TaskItemViewHolder>(TaskDiffItemCallback()) {
@@ -21,23 +22,17 @@ class TaskItemAdapter: ListAdapter<Task, TaskItemAdapter.TaskItemViewHolder>(Tas
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskItemViewHolder =
         TaskItemViewHolder.inflateFrom(parent)
 
-    class TaskItemViewHolder(val rootView: CardView): RecyclerView.ViewHolder(rootView) {
+    class TaskItemViewHolder(val binding: TaskItemBinding): RecyclerView.ViewHolder(binding.root) {
 
-        val taskName = rootView.findViewById<TextView>(R.id.tv_task_name)
-        val taskDone = rootView.findViewById<CheckBox>(R.id.cb_task_done)
-
-        // Adds data to the view holder's layout
         fun bind(item: Task) {
-            taskName.text = item.taskName
-            taskDone.isChecked = item.taskDone
+            binding.task = item
         }
 
         companion object {
-            // creates each view holder and inflates its layout
             fun inflateFrom(parent: ViewGroup): TaskItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.task_item, parent, false) as CardView
-                return TaskItemViewHolder(view)
+                val binding = TaskItemBinding.inflate(layoutInflater, parent, false)
+                return TaskItemViewHolder(binding)
             }
         }
     }
